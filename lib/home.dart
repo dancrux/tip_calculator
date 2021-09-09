@@ -90,7 +90,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           InkWell(
                             onTap: () {
                               setState(() {
-                                if (_personCounter > 1) {
+                                if (_amount < 0 || _amount.toString().isEmpty) {
+                                  showSnackBar("Enter a Valid Amount");
+                                } else if (_personCounter > 1) {
                                   _personCounter--;
                                 }
                               });
@@ -123,7 +125,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           InkWell(
                             onTap: () {
                               setState(() {
-                                _personCounter++;
+                                if (_amount < 0 || _amount.toString().isEmpty) {
+                                  showSnackBar("Enter a Valid Amount");
+                                } else {
+                                  _personCounter++;
+                                }
                               });
                             },
                             child: Container(
@@ -169,11 +175,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ],
                   ),
-                  Text(""),
+                  Text(
+                    "$_tipPercentage%",
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0),
+                  ),
                   Slider(
-                      value: 100,
-                      onChanged: (_tipPercentage) {
-                        setState(() {});
+                      value: (_tipPercentage).toDouble(),
+                      min: 0,
+                      max: 100,
+                      divisions: 100,
+                      activeColor: Colors.green,
+                      inactiveColor: _customColor,
+                      onChanged: (double value) {
+                        setState(() {
+                          _tipPercentage = value.toInt();
+                        });
                       })
                 ],
               ),
